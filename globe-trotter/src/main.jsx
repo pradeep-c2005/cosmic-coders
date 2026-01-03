@@ -31,13 +31,19 @@ const reportWebVitals = (metric) => {
   }
   
   // Send to analytics
-  const { name, delta, value, id } = metric;
-  analytics.logEvent('web_vitals', {
-    name,
-    delta: Math.round(delta),
-    value: Math.round(value),
-    id,
-  });
+  try {
+    const { name, delta, value, id } = metric;
+    if (analytics && typeof analytics.logEvent === 'function') {
+      analytics.logEvent('web_vitals', {
+        name,
+        delta: Math.round(delta),
+        value: Math.round(value),
+        id,
+      });
+    }
+  } catch (error) {
+    console.warn('Failed to log web vitals:', error);
+  }
 };
 
 // Error boundary
@@ -53,10 +59,16 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     console.error('React Error Boundary caught an error:', error, errorInfo);
-    analytics.logEvent('error', {
-      error: error.toString(),
-      errorInfo: JSON.stringify(errorInfo),
-    });
+    try {
+      if (analytics && typeof analytics.logEvent === 'function') {
+        analytics.logEvent('error', {
+          error: error.toString(),
+          errorInfo: JSON.stringify(errorInfo),
+        });
+      }
+    } catch (analyticsError) {
+      console.warn('Failed to log error to analytics:', analyticsError);
+    }
   }
 
   render() {
