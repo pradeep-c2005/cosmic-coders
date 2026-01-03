@@ -16,6 +16,7 @@ import MyTripsPage from './pages/MyTripsPage';
 import ItineraryBuilderPage from './pages/ItineraryBuilderPage';
 import ItineraryViewPage from './pages/ItineraryViewPage';
 import BudgetPage from './pages/BudgetPage';
+import ExplorePage from './pages/ExplorePage';
 import ProfilePage from './pages/ProfilePage';
 import ShareTripPage from './pages/ShareTripPage';
 
@@ -115,6 +116,12 @@ function App() {
             <Route path="/trip/:tripId/budget" element={
               <PrivateRoute>
                 <BudgetPage />
+              </PrivateRoute>
+            } />
+
+            <Route path="/explore" element={
+              <PrivateRoute>
+                <ExplorePage />
               </PrivateRoute>
             } />
             
